@@ -4,10 +4,10 @@
 #include <stdlib.h>
 #include <stdint.h>
 
-#include "srofs_io.c"
-#include "srofs_util.c"
-#include "srofs.c"
-#include "srofs_init_partition.c"
+#include "../srofs_io.h"
+#include "../srofs_util.h"
+#include "../srofs.h"
+#include "../srofs_init_partition.h"
 
 void resource_dump(srofs_resource_t *resource);
 
@@ -18,6 +18,87 @@ void format_all() {
     for (i = 0; i < 0x7fff; i++) {
         _srofs_io_write(SROFS_DRIVER_VIRTUAL, i, 0x00);
     }
+}
+
+char* itob(int i) {
+    int bits;
+    int j, k;
+    uint16_t mi = 0;
+    mi |= i;
+    static char buff[sizeof(mi) * 8 + 1];
+    bits = sizeof(mi) * 8;
+    for (j = bits - 1, k = 0; j >= 0; j--, k++) {
+        buff[k] = ((mi >> j) & 0x01) + '0';
+    }
+    buff[bits] = '\0';
+    return buff;
+}
+
+void _srofs_io_memory_dump(srofs_t *srofs) {
+    srofs_memory_address_t memory_address;
+    uint16_t count, count2;
+    uint8_t data = 0;
+    FILE *fp;
+    if (!_srofs_is_driver_monted(srofs->driver)) {
+        printf("srofs not mounted yet\n");
+        return;
+    }
+    fp = fopen("dump", "w+");
+    fprintf(fp, "DRIVER: %x\n", srofs->driver);
+    fprintf(fp, "\n==========================\n");
+    fprintf(fp, "\nsrofs\n");
+    fprintf(fp, "-----------------\n");
+    fprintf(fp, "memory_size:                       0x%04x %4d %s\n", srofs->memory_size, srofs->memory_size, itob(srofs->memory_size));
+    fprintf(fp, "resource_descriptor_table_address: 0x%04x %4d %s\n", srofs->resource_descriptor_table_address, srofs->resource_descriptor_table_address, itob(srofs->resource_descriptor_table_address));
+    fprintf(fp, "cluster_table_address:             0x%04x %4d %s\n", srofs->cluster_table_address, srofs->cluster_table_address, itob(srofs->cluster_table_address));
+    fprintf(fp, "sizeof_resource_descriptor_table:  0x%04x %4d %s\n", srofs->sizeof_resource_descriptor_table, srofs->sizeof_resource_descriptor_table, itob(srofs->sizeof_resource_descriptor_table));
+    fprintf(fp, "sizeof_cluster_table:              0x%04x %4d %s\n", srofs->sizeof_cluster_table, srofs->sizeof_cluster_table, itob(srofs->sizeof_resource_descriptor_table));
+    fprintf(fp, "sizeof_resource_descriptor:        0x%04x %4d %s\n", srofs->sizeof_resource_descriptor, srofs->sizeof_resource_descriptor, itob(srofs->sizeof_resource_descriptor));
+    fprintf(fp, "sizeof_cluster:                    0x%04x %4d %s\n", srofs->sizeof_cluster, srofs->sizeof_cluster, itob(srofs->sizeof_cluster));
+    fprintf(fp, "resource_descriptor_count:         0x%04x %4d %s\n", srofs->resource_descriptor_count, srofs->resource_descriptor_count, itob(srofs->resource_descriptor_count));
+    fprintf(fp, "cluster_count:                     0x%04x %4d %s\n", srofs->cluster_count, srofs->cluster_count, itob(srofs->cluster_count));
+    fprintf(fp, "sizeof_cluster_data:               0x%04x %4d %s\n", srofs->sizeof_cluster_data, srofs->sizeof_cluster_data, itob(srofs->sizeof_cluster_data));
+    fprintf(fp, "sizeof_cluster_control:            0x%04x %4d %s\n", srofs->sizeof_cluster_control, srofs->sizeof_cluster_control, itob(srofs->sizeof_cluster_control));
+    fprintf(fp, "free_clusters:                     0x%04x %4d %s\n", srofs->free_clusters, srofs->free_clusters, itob(srofs->free_clusters));
+    fprintf(fp, "flags:                             0x%04x %4d %s\n", srofs->flags, srofs->flags, itob(srofs->flags));
+    fprintf(fp, "\n==========================\n");
+    fprintf(fp, "\nResource table\n");
+    fprintf(fp, "-----------------\n");
+    count = 0;
+    for (memory_address = srofs->resource_descriptor_table_address; memory_address < (srofs->resource_descriptor_table_address + srofs->sizeof_resource_descriptor_table); memory_address++) {
+        if ((count % srofs->sizeof_resource_descriptor) == 0) {
+            fprintf(fp, "\n%02x: ", (count) ? count / srofs->sizeof_resource_descriptor : 0);
+        }
+        fprintf(fp, "%02x ", _srofs_io_read(srofs->driver, memory_address));
+        count++;
+    }
+    fprintf(fp, "\n==========================\n");
+    fprintf(fp, "\nCluster table\n");
+    fprintf(fp, "-----------------\n");
+    fprintf(fp, "\n    |nn |pp |");
+    for (count = 0; count < srofs->sizeof_cluster_data; count++) {
+        fprintf(fp, "dd ");
+    }
+    fprintf(fp, "\n    ---------");
+    for (count = 0; count < srofs->sizeof_cluster_data; count++) {
+        fprintf(fp, "---");
+    }
+    count = 0;
+
+    for (memory_address = srofs->cluster_table_address; memory_address < (srofs->cluster_table_address + srofs->sizeof_cluster_table); memory_address++) {
+        if ((count % srofs->sizeof_cluster) == 0) {
+            fprintf(fp, "\n%02x: |", (count) ? count / srofs->sizeof_cluster : 0);
+            count2 = 0;
+        }
+        if (count2 == 1 || count2 == 2) {
+            fprintf(fp, "|");
+        }
+        fprintf(fp, "%02x ", (data = _srofs_io_read(srofs->driver, memory_address)));
+        fflush(fp);
+        count++;
+        count2++;
+    }
+    fclose(fp);
 }
 
 int main() {
@@ -50,7 +131,7 @@ int main() {
     read_only_mounting_spec(&srofs);
     read_only_opening_spec(&srofs);
 
-    srofs_mount(SROFS_SPEC_DRIVER, &srofs, SROFS_MOUNT_OPTION_NORMAL);
+    srofs_mount(SROFS_DRIVER_VIRTUAL, &srofs, SROFS_MOUNT_OPTION_NORMAL);
     _srofs_io_memory_dump(&srofs);
     return 0;
 }
