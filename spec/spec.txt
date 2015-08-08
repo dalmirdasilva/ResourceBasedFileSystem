@@ -1,4 +1,4 @@
-Rs is composed with 3 base elements. 
+The srofs is composed with 3 base elements. 
 
 One of them is the chunk of memory that contais the data of everything, called "cluster":
 
