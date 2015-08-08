@@ -6,9 +6,9 @@ The srofs is a simplified file system for small micro-controlled devices (like P
 Is is resource oriented because instead of using the well known concept of a File System, it has a Resource Pool concept. 
 It doesn't have hierarchical directory tree. It is a poll of a limited number of resource which can:
 
-- Be allocated and deallocated at any time;
-- Grows according to the date you store inside; 
-- 
+- Be allocated and deallocated at any time
+- Grows according to the date you store inside 
+
 The srofs is composed by 3 base elements:
 
 #### Cluster
