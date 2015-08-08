@@ -7,21 +7,21 @@ Is is resource oriented because instead of using the well known concept of a Fil
 It doesn't have hierarchical directory tree. It is a poll of a limited number of resource which can:
 
 - Be allocated and deallocated at any time
-- Grows according to the date you store inside 
+- Grows according to the data you store inside 
 
 The srofs is composed by 3 base elements:
 
 #### Cluster
-Is the chunk of memory that contais the data of everything. A cluster is a double linked queue. 
-Therefore, it has a pointer to the next cluster and a poiter to the previous cluster.
+Is the chunk of memory that contains the data of everything. A cluster is a double linked queue. 
+Therefore, it has a pointer to the next cluster and a pointer to the previous cluster.
 
 #### Resource Descriptor
 The srofs partition has a space reserved for a list of resource descriptors entries called resource descriptors table, each entry in this table is 4 bytes long and is used to hold the size, first cluster and flags of the corresponding resource.
-Each resource descriptor is a integer thar represets a index in such table. The entry flag has the information about the current availability of the resource entry.
+Each resource descriptor is a integer that represents a index in such table. The entry flag has the information about the current availability of the resource entry.
 
 ### Resource
 The resource is a virtual element, it exists only in execution time. 
-Always when a resource description if opened, a resource instatnce is created to represent all data about the resource description: 
+Always when a resource description if opened, a resource instance is created to represent all data about the resource description: 
 -  the current pointer
 -  the current cluster
 -  cluster offset
@@ -66,7 +66,7 @@ f: 00000000 - fisical flags of the resource
 
 #### Resource Description
 
-Integer poiting to the resource description table.
+Integer pointing to the resource description table.
 
 
 ### Resource
@@ -100,19 +100,34 @@ Is a 0 up to 255 identifier.
 
 ### srofs table
 
-Is the first 32 bytes of the disc.
+Is the first 32 bytes of the disk and comport the following structure:
 
 ```
-flags
-    // 00000000
-    // ||||||||_ 1=is mounted (RS_FLAG_BIT_DRIVER_MOUNTED)
-    // |||||||__ 1=read only (RS_FLAG_BIT_READ_ONLY)
-    // ||||||___ Unused
-    // |||||____ Unused
-    // ||||_____ Unused
-    // |||______ Unused
-    // ||_______ Unused
-    // |________ Unused
+typedef struct {
+    rs_driver_t driver;
+    uint16_t memory_size;
+    rs_memory_address_t resource_descriptor_table_address;
+    rs_memory_address_t cluster_table_address;
+    uint16_t sizeof_resource_descriptor_table;
+    uint16_t sizeof_cluster_table;
+    uint8_t sizeof_resource_descriptor;
+    uint8_t sizeof_cluster;
+    uint8_t resource_descriptor_count;
+    uint8_t cluster_count;
+    uint8_t sizeof_cluster_data;
+    uint8_t sizeof_cluster_control;
+    uint8_t free_clusters;
+    uint8_t flags
+		    	// 00000000
+		    	// ||||||||_ 1=is mounted (RS_FLAG_BIT_DRIVER_MOUNTED)
+		    	// |||||||__ 1=read only (RS_FLAG_BIT_READ_ONLY)
+		    	// ||||||___ Unused
+		    	// |||||____ Unused
+		    	// ||||_____ Unused
+		    	// |||______ Unused
+		    	// ||_______ Unused
+		    	// |________ Unused
+} rs_t;
 
 ```
 
@@ -125,7 +140,7 @@ driver: 0
 
 ==========================
 
-Rs
+srofs structure
 -----------------
 memory_size:                       0x7f94 32660 0111111110010100
 resource_descriptor_table_address: 0x0020   32 0000000000100000
@@ -141,7 +156,7 @@ sizeof_cluster_control:            0x0002    2 0000000000000010
 free_clusters:                     0x00f9  249 0000000011111001
 flags:                             0x0000    0 0000000000000000
 
-==========================
+
 
 Resource table
 -----------------
@@ -178,7 +193,7 @@ Resource table
 1d: 00 00 00 00 
 1e: 00 00 00 00 
 1f: 00 00 00 00 
-==========================
+
 
 Cluster table
 -----------------
