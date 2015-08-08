@@ -4,22 +4,22 @@
 
 # Add inputs and outputs from these tool invocations to the build variables 
 C_SRCS += \
-../srofs.c \
-../srofs_init_partition.c \
-../srofs_io.c \
-../srofs_util.c 
+../srbfs.c \
+../srbfs_init_partition.c \
+../srbfs_io.c \
+../srbfs_util.c 
 
 OBJS += \
-./srofs.o \
-./srofs_init_partition.o \
-./srofs_io.o \
-./srofs_util.o 
+./srbfs.o \
+./srbfs_init_partition.o \
+./srbfs_io.o \
+./srbfs_util.o 
 
 C_DEPS += \
-./srofs.d \
-./srofs_init_partition.d \
-./srofs_io.d \
-./srofs_util.d 
+./srbfs.d \
+./srbfs_init_partition.d \
+./srbfs_io.d \
+./srbfs_util.d 
 
 
 # Each subdirectory must supply rules for building sources it contributes

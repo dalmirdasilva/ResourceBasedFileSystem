@@ -1,24 +1,18 @@
-TARGET = srofs
-LIBS = -lm
-CC = gcc
-CFLAGS = -g -Wall
+CC=gcc
+CFLAGS=-c -Wall
+LDFLAGS=-g
+SOURCES=main.c srbfs_spec.c srbfs_spec_helper.c ../srbfs.c ../srbfs_init_partition.c ../srbfs_io.c ../srbfs_util.c
+OBJECTS=$(SOURCES:.cpp=.o)
+TARGET=srbfs
+INCLUDES=-I./ -I../
 
-.PHONY: default all clean
+all: $(SOURCES) $(TARGET)
+    
+$(TARGET): $(OBJECTS) 
+	$(CC) $(INCLUDES) $(LDFLAGS) $(OBJECTS) -o $@
 
-default: $(TARGET)
-all: default
+.cpp.o:
+	$(CC) $(INCLUDES) $(CFLAGS) $< -o $@
 
-OBJECTS = $(patsubst %.c, %.o, $(wildcard *.c))
-HEADERS = $(wildcard *.h)
-
-%.o: %.c $(HEADERS)
-	$(CC) $(CFLAGS) -c $< -o $@
-
-.PRECIOUS: $(TARGET) $(OBJECTS)
-
-$(TARGET): $(OBJECTS)
-	$(CC) $(OBJECTS) -Wall $(LIBS) -o $@
-
-clean:
-	-rm -f *.o
-	-rm -f $(TARGET)
+clear:
+	rm $(TARGET) 
