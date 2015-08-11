@@ -7,30 +7,25 @@
 #include "../srbfs_io.h"
 #include "../srbfs_util.h"
 #include "../srbfs.h"
-#include "../srbfs_init_partition.h"
+#include "../srbfs_make_partition.h"
 
 #include "srbfs_spec.h"
+#include "srbfs_spec_helper.h"
+
 
 FILE *srbfs_fp;
-uint8_t (*extern_srbfs_read)(uint8_t driver, uint16_t address);
-void (*extern_srbfs_write)(uint8_t driver, uint16_t address, uint8_t data_to_write);
 
-uint8_t srbfs_read_imp(uint8_t driver, uint16_t address);
-void srbfs_write_imp(uint8_t driver, uint16_t address, uint8_t data_to_write);
+uint8_t _srbfs_io_read(srbfs_driver_t driver, srbfs_memory_address_t address);
+void _srbfs_io_write(srbfs_driver_t driver, srbfs_memory_address_t address, uint8_t data);
 
 void init_srbfs_io();
 void finish_srbfs_io();
 
 int main() {
-
-    init_srbfs_io();
-
     srbfs_t srbfs;
-
-    printf("%ld", sizeof(srbfs_t));
-
+    init_srbfs_io();
+    srbfs_make_partition(&srbfs, SRBFS_DISK_32K, SRBFS_ENV_VIRTUAL, SRBFS_DRIVER_VIRTUAL);
     format_all();
-    srbfs_init_partition(&srbfs, SRBFS_DISK_32K, SRBFS_ENV_VIRTUAL);
     srbfs_format(&srbfs);
     format_spec(&srbfs);
     mount_spec(&srbfs);
@@ -63,27 +58,25 @@ int main() {
 }
 
 void init_srbfs_io() {
-    if ((srbfs_fp = fopen("img.hd", "rb")) == NULL) {
+    if ((srbfs_fp = fopen("img.hd", "rb+")) == NULL) {
         printf("Error reading img.hd");
         exit(1);
     }
-    extern_srbfs_read = srbfs_read_imp;
-    extern_srbfs_write = srbfs_write_imp;
 }
 
 void finish_srbfs_io() {
     fclose(srbfs_fp);
 }
 
-uint8_t srbfs_read_imp(uint8_t driver, uint16_t address) {
-    unsigned char read_data;
+uint8_t _srbfs_io_read(srbfs_driver_t driver, srbfs_memory_address_t address) {
+    unsigned char data;
     fseek(srbfs_fp, address, 0);
-    fread(&read_data, sizeof(read_data), 1, srbfs_fp);
-    return read_data;
+    fread(&data, sizeof(data), 1, srbfs_fp);
+    return data;
 }
 
-void srbfs_write_imp(uint8_t driver, uint16_t address, uint8_t data_to_write) {
+void _srbfs_io_write(srbfs_driver_t driver, srbfs_memory_address_t address, uint8_t data) {
     fseek(srbfs_fp, address, 0);
-    fwrite(&data_to_write, sizeof(data_to_write), 1, srbfs_fp);
+    fwrite(&data, sizeof(data), 1, srbfs_fp);
     fflush(srbfs_fp);
 }

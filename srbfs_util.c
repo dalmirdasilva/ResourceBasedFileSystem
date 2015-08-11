@@ -14,7 +14,7 @@
 #include "srbfs_util.h"
 #include "srbfs_io.h"
 
-void _srbfs_write_srbfs_to_disc(srbfs_driver_t driver, srbfs_t *srbfs) {
+void _srbfs_write_srbfs_to_disk(srbfs_driver_t driver, srbfs_t *srbfs) {
     uint8_t i;
     uint8_t *p;
     srbfs_memory_address_t address = SRBFS_FIRST_ADDRESS_OF_MEMORY;
@@ -24,7 +24,7 @@ void _srbfs_write_srbfs_to_disc(srbfs_driver_t driver, srbfs_t *srbfs) {
     }
 }
 
-void _srbfs_read_srbfs_from_disc(srbfs_driver_t driver, srbfs_t *srbfs) {
+void _srbfs_read_srbfs_from_disk(srbfs_driver_t driver, srbfs_t *srbfs) {
     uint8_t i;
     uint8_t *p;
     srbfs_memory_address_t address = SRBFS_FIRST_ADDRESS_OF_MEMORY;

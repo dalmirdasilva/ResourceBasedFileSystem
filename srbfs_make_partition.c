@@ -8,21 +8,17 @@
  * @author Dalmir da Silva <dalmirdasilva@gmail.com>
  */
 
-#ifndef __SRBFS_INIT_PARTITION_C__
-#define __SRBFS_INIT_PARTITION_C__ 1
+#ifndef __SRBFS_MAKE_PARTITION_C__
+#define __SRBFS_MAKE_PARTITION_C__ 1
 
-#include "srbfs_init_partition.h"
+#include "srbfs_make_partition.h"
 
-void srbfs_init_partition(srbfs_t *srbfs, srbfs_disk_size_t size, srbfs_environment_t env) {
+void srbfs_make_partition(srbfs_t *srbfs, srbfs_disk_size_t size, srbfs_environment_t env, srbfs_driver_t driver) {
     
+    srbfs->driver = driver;
     switch(size) {
         
         case SRBFS_DISK_32K:
-            if (env == SRBFS_ENV_VIRTUAL) {
-                srbfs->driver = SRBFS_DRIVER_VIRTUAL;
-            } else {
-                srbfs->driver = SRBFS_DRIVER_ARDUINO_EEPROM;
-            }
             srbfs->memory_size = 0x7f94; //32660;
             srbfs->resource_descriptor_table_address = 0x0020; //32;
             srbfs->cluster_table_address = 0x00a0; //160;
@@ -35,15 +31,9 @@ void srbfs_init_partition(srbfs_t *srbfs, srbfs_disk_size_t size, srbfs_environm
             srbfs->sizeof_cluster_data = 0x80; //128;
             srbfs->sizeof_cluster_control = 0x02; //2;
             srbfs->free_clusters = 0xfa; //250;
-            srbfs->flags = 0x00; //0;
         break;
         
         case SRBFS_DISK_8K:
-            if (env == SRBFS_ENV_VIRTUAL) {
-                srbfs->driver = SRBFS_DRIVER_VIRTUAL;
-            } else {
-                srbfs->driver = SRBFS_DRIVER_ARDUINO_EEPROM;
-            }
             srbfs->memory_size = 0x2000; //8192;
             srbfs->resource_descriptor_table_address = 0x0020; //32;
             srbfs->cluster_table_address = 0x00a0; //160;
@@ -56,16 +46,9 @@ void srbfs_init_partition(srbfs_t *srbfs, srbfs_disk_size_t size, srbfs_environm
             srbfs->sizeof_cluster_data = 0x1e; //30;
             srbfs->sizeof_cluster_control = 0x02; //2;
             srbfs->free_clusters = 0xfb; //251;
-            srbfs->flags = 0x00; //0;
         break;
         
         default:
-            
-            if (env == SRBFS_ENV_VIRTUAL) {
-                srbfs->driver = SRBFS_DRIVER_VIRTUAL;
-            } else {
-                srbfs->driver = SRBFS_DRIVER_ARDUINO_EEPROM;
-            }
             srbfs->memory_size = 0xf46; //3910;
             srbfs->resource_descriptor_table_address = 0x0020; //32;
             srbfs->cluster_table_address = 0x00a0; //160;
@@ -78,9 +61,9 @@ void srbfs_init_partition(srbfs_t *srbfs, srbfs_disk_size_t size, srbfs_environm
             srbfs->sizeof_cluster_data = 0x0d; //13;
             srbfs->sizeof_cluster_control = 0x02; //2;
             srbfs->free_clusters = 0xfa; //250;
-            srbfs->flags = 0x00; //0;
         break;
     }
+    srbfs->flags = 0x00; //0;
 }
 
-#endif // __SRBFS_INIT_PARTITION_C__
+#endif // __SRBFS_MAKE_PARTITION_C__

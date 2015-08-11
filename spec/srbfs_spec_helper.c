@@ -19,7 +19,7 @@ void resource_dump(srbfs_resource_t *resource) {
 
 void format_all() {
     uint16_t i;
-    for (i = 0; i < 0x7fff; i++) {
+    for (i = 0; i < 0x8000; i++) {
         _srbfs_io_write(SRBFS_DRIVER_VIRTUAL, i, 0x00);
     }
 }

@@ -14,23 +14,23 @@
 #include "srbfs.h"
 
 /**
- * Write a resource system table to disc
+ * Write a resource system table to disk
  * 
  * @param driver
  * @param srbfs
  */
-void _srbfs_write_srbfs_to_disc(srbfs_driver_t driver, srbfs_t *srbfs);
+void _srbfs_write_srbfs_to_disk(srbfs_driver_t driver, srbfs_t *srbfs);
 
 /**
- * Read a resource system table from disc
+ * Read a resource system table from disk
  * 
  * @param driver
  * @param srbfs
  */
-void _srbfs_read_srbfs_from_disc(srbfs_driver_t driver, srbfs_t *srbfs);
+void _srbfs_read_srbfs_from_disk(srbfs_driver_t driver, srbfs_t *srbfs);
 
 /**
- * Allocate a free cluster from disc if any
+ * Allocate a free cluster from disk if any
  * 
  * @param srbfs
  * @return 
@@ -205,7 +205,7 @@ void _srbfs_free_resource_descriptor(srbfs_t *srbfs, srbfs_resource_descriptor_t
  */
 #define _srbfs_decrease_free_clusters(srbfs, n)   { \
                                                 srbfs->free_clusters -= n; \
-                                                _srbfs_write_srbfs_to_disc(srbfs->driver, srbfs); \
+                                                _srbfs_write_srbfs_to_disk(srbfs->driver, srbfs); \
                                             }
 
 /**
@@ -216,7 +216,7 @@ void _srbfs_free_resource_descriptor(srbfs_t *srbfs, srbfs_resource_descriptor_t
  */
 #define _srbfs_increase_free_clusters(srbfs, n)   { \
                                                 srbfs->free_clusters += n; \
-                                                _srbfs_write_srbfs_to_disc(srbfs->driver, srbfs); \
+                                                _srbfs_write_srbfs_to_disk(srbfs->driver, srbfs); \
                                             }
 
 /**

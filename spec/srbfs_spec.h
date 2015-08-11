@@ -1,6 +1,8 @@
 #ifndef __SRBFS_SPEC_H__
 #define __SRBFS_SPEC_H__ 1
 
+#define SRBFS_SPEC_PRINTF printf
+
 #include "../srbfs.h"
 
 void format_spec(srbfs_t *srbfs);

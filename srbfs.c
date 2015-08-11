@@ -20,7 +20,7 @@ srbfs_global_flags_t srbfs_global_flags;
 
 srbfs_op_result_t srbfs_format(srbfs_t *srbfs) {
     uint8_t i;
-    _srbfs_write_srbfs_to_disc(srbfs->driver, srbfs);
+    _srbfs_write_srbfs_to_disk(srbfs->driver, srbfs);
     for (i = 0; i < srbfs->resource_descriptor_count; i++) {
         _srbfs_format_resorce_descriptor(srbfs, i);
     }
@@ -34,7 +34,7 @@ srbfs_op_result_t srbfs_mount(srbfs_driver_t driver, srbfs_t *srbfs, srbfs_mount
     if (_srbfs_is_driver_monted(driver)) {
         return SRBFS_OP_RESULT_ERROR_DRIVER_BUSY;
     }
-    _srbfs_read_srbfs_from_disc(driver, srbfs);
+    _srbfs_read_srbfs_from_disk(driver, srbfs);
     _srbfs_set_driver_monted(driver, 1);
     if (options & SRBFS_MOUNT_OPTION_READ_ONLY) {
         srbfs->flags |= SRBFS_FLAG_BIT_READ_ONLY;

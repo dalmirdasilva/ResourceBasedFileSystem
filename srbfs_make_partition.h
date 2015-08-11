@@ -8,8 +8,8 @@
  * @author Dalmir da Silva <dalmirdasilva@gmail.com>
  */
 
-#ifndef __SRBFS_INIT_PARTITION_H__
-#define __SRBFS_INIT_PARTITION_H__ 1
+#ifndef __SRBFS_MAKE_PARTITION_H__
+#define __SRBFS_MAKE_PARTITION_H__ 1
 
 #include "srbfs.h"
 
@@ -24,6 +24,6 @@ typedef enum {
     SRBFS_ENV_VIRTUAL
 } srbfs_environment_t;
 
-void srbfs_init_partition(srbfs_t *srbfs, srbfs_disk_size_t size, srbfs_environment_t env);
+void srbfs_make_partition(srbfs_t *srbfs, srbfs_disk_size_t size, srbfs_environment_t env, srbfs_driver_t driver);
 
-#endif /* __SRBFS_INIT_PARTITION_H__ */
+#endif // __SRBFS_MAKE_PARTITION_H__
