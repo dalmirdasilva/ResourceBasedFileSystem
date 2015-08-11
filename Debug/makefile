@@ -30,38 +30,38 @@ endif
 
 # Add inputs and outputs from these tool invocations to the build variables 
 LSS += \
-libSimpleResourceBasedFileSystem.lss \
+libResourceBasedFileSystem.lss \
 
 SIZEDUMMY += \
 sizedummy \
 
 
 # All Target
-all: libSimpleResourceBasedFileSystem.a secondary-outputs
+all: libResourceBasedFileSystem.a secondary-outputs
 
 # Tool invocations
-libSimpleResourceBasedFileSystem.a: $(OBJS)
+libResourceBasedFileSystem.a: $(OBJS)
 	@echo 'Building target: $@'
 	@echo 'Invoking: AVR Archiver'
-	avr-ar -r  "libSimpleResourceBasedFileSystem.a" $(OBJS) $(LIBS)
+	avr-ar -r  "libResourceBasedFileSystem.a" $(OBJS) $(LIBS)
 	@echo 'Finished building target: $@'
 	@echo ' '
 
-libSimpleResourceBasedFileSystem.lss: libSimpleResourceBasedFileSystem.a
+libResourceBasedFileSystem.lss: libResourceBasedFileSystem.a
 	@echo 'Invoking: AVR Create Extended Listing'
-	-avr-objdump -h -S libSimpleResourceBasedFileSystem.a  >"libSimpleResourceBasedFileSystem.lss"
+	-avr-objdump -h -S libResourceBasedFileSystem.a  >"libResourceBasedFileSystem.lss"
 	@echo 'Finished building: $@'
 	@echo ' '
 
-sizedummy: libSimpleResourceBasedFileSystem.a
+sizedummy: libResourceBasedFileSystem.a
 	@echo 'Invoking: Print Size'
-	-avr-size --format=avr --mcu=atmega16 libSimpleResourceBasedFileSystem.a
+	-avr-size --format=avr --mcu=atmega16 libResourceBasedFileSystem.a
 	@echo 'Finished building: $@'
 	@echo ' '
 
 # Other Targets
 clean:
-	-$(RM) $(OBJS)$(C_DEPS)$(ASM_DEPS)$(ARCHIVES)$(LSS)$(S_DEPS)$(SIZEDUMMY)$(S_UPPER_DEPS) libSimpleResourceBasedFileSystem.a
+	-$(RM) $(OBJS)$(C_DEPS)$(ASM_DEPS)$(ARCHIVES)$(LSS)$(S_DEPS)$(SIZEDUMMY)$(S_UPPER_DEPS) libResourceBasedFileSystem.a
 	-@echo ' '
 
 secondary-outputs: $(LSS) $(SIZEDUMMY)

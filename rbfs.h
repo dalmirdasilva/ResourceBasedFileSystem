@@ -1,7 +1,7 @@
 /**
  * rbfs - Simple Resource Based File System
  * 
- * rs.h
+ * rbfs.h
  * 
  * An file system header definition based on the idea of resources
  * 
@@ -146,46 +146,46 @@ typedef struct {
 extern rbfs_global_flags_t rbfs_global_flags;
 
 // Format a device
-rbfs_op_result_t rbfs_format(rbfs_t *rs);
+rbfs_op_result_t rbfs_format(rbfs_t *rbfs);
 
 // Register a work area
-rbfs_op_result_t rbfs_mount(rbfs_driver_t driver, rbfs_t *rs, rbfs_mount_options_t options);
+rbfs_op_result_t rbfs_mount(rbfs_driver_t driver, rbfs_t *rbfs, rbfs_mount_options_t options);
 
 // Unregister a work area
-rbfs_op_result_t rbfs_umount(rbfs_t *rs);
+rbfs_op_result_t rbfs_umount(rbfs_t *rbfs);
 
 // Open/Create a resource (you must give a empty resource)
-rbfs_op_result_t rbfs_open(rbfs_t *rs, rbfs_resource_code_t resource_code, rbfs_resource_t *resource, rbfs_open_resource_options_t options);
+rbfs_op_result_t rbfs_open(rbfs_t *rbfs, rbfs_resource_code_t resource_code, rbfs_resource_t *resource, rbfs_open_resource_options_t options);
 
 // Close a resource
-rbfs_op_result_t rbfs_close(rbfs_t *rs, rbfs_resource_t *resource);
+rbfs_op_result_t rbfs_close(rbfs_t *rbfs, rbfs_resource_t *resource);
 
 // Read a byte from resource
-uint8_t rbfs_read(rbfs_t *rs, rbfs_resource_t *resource);
+uint8_t rbfs_read(rbfs_t *rbfs, rbfs_resource_t *resource);
 
 // Write a byte from resource
-rbfs_op_result_t rbfs_write(rbfs_t *rs, rbfs_resource_t *resource, uint8_t data_to_write);
+rbfs_op_result_t rbfs_write(rbfs_t *rbfs, rbfs_resource_t *resource, uint8_t data_to_write);
 
 // Move read/write pointer, (Expand resource size not implemented yet)
-rbfs_op_result_t rbfs_seek(rbfs_t *rs, rbfs_resource_t *resource, rbfs_seek_origin_t origin, rbfs_seek_int_t offset);
+rbfs_op_result_t rbfs_seek(rbfs_t *rbfs, rbfs_resource_t *resource, rbfs_seek_origin_t origin, rbfs_seek_int_t offset);
 
 // Truncate resource size
-rbfs_op_result_t rbfs_truncate(rbfs_t *rs, rbfs_resource_t *resource);
+rbfs_op_result_t rbfs_truncate(rbfs_t *rbfs, rbfs_resource_t *resource);
 
 // Flush cached data
-void rbfs_sync(rbfs_t *rs, rbfs_resource_t *resource);
+void rbfs_sync(rbfs_t *rbfs, rbfs_resource_t *resource);
 
 // Get descriptor status
-void rbfs_stat(rbfs_t *rs, rbfs_resource_t *resource, rbfs_stat_t *stat);
+void rbfs_stat(rbfs_t *rbfs, rbfs_resource_t *resource, rbfs_stat_t *stat);
 
 // Rewind the position of a resource pointer
-rbfs_op_result_t rbfs_rewind(rbfs_t *rs, rbfs_resource_t *resource);
+rbfs_op_result_t rbfs_rewind(rbfs_t *rbfs, rbfs_resource_t *resource);
 
 // Create/Allocate a new resource if available
-rbfs_resource_code_t rbfs_alloc(rbfs_t *rs);
+rbfs_resource_code_t rbfs_alloc(rbfs_t *rbfs);
 
 // Make a resource free to be allocated for another one
-uint8_t rbfs_release(rbfs_t *rs, rbfs_resource_t *resource);
+uint8_t rbfs_release(rbfs_t *rbfs, rbfs_resource_t *resource);
 
 // Get size of a resource
 rbfs_resource_size_t rbfs_size(rbfs_resource_t *resource);
@@ -200,9 +200,9 @@ uint8_t rbfs_eor(rbfs_resource_t *resource);
 uint8_t rbfs_error(rbfs_resource_t *resource);
 
 // Return the current available space in the partition
-rbfs_resource_size_t rbfs_available_space(rbfs_t *rs);
+rbfs_resource_size_t rbfs_available_space(rbfs_t *rbfs);
 
 // Return the total space in the partition
-rbfs_resource_size_t rbfs_total_space(rbfs_t *rs);
+rbfs_resource_size_t rbfs_total_space(rbfs_t *rbfs);
 
 #endif // __RBFS_H__
