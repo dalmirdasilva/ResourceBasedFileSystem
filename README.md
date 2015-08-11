@@ -1,22 +1,22 @@
-# Simple Resource Oriented FileSystem (srofs)
+# Resource Based FileSystem (rbfs)
 
 ## What is it?
 
-The srofs is a simplified file system for small micro-controlled devices (like PIC or Arduino). 
+The rbfs is a simplified file system for small micro-controlled devices (like PIC or Arduino). 
 Is is resource oriented because instead of using the well known concept of a File System, it has a Resource Pool concept. 
 It doesn't have hierarchical directory tree. It is a poll of a limited number of resource which can:
 
 - Be allocated and deallocated at any time
 - Grows according to the data you store inside 
 
-The srofs is composed by 3 base elements:
+The rbfs is composed by 3 base elements:
 
 #### Cluster
 Is the chunk of memory that contains the data of everything. A cluster is a double linked queue. 
 Therefore, it has a pointer to the next cluster and a pointer to the previous cluster.
 
 #### Resource Descriptor
-The srofs partition has a space reserved for a list of resource descriptors entries called resource descriptors table, each entry in this table is 4 bytes long and is used to hold the size, first cluster and flags of the corresponding resource.
+The rbfs partition has a space reserved for a list of resource descriptors entries called resource descriptors table, each entry in this table is 4 bytes long and is used to hold the size, first cluster and flags of the corresponding resource.
 Each resource descriptor is a integer that represents a index in such table. The entry flag has the information about the current availability of the resource entry.
 
 ### Resource
@@ -98,7 +98,7 @@ Structure that contains:
 Is a 0 up to 255 identifier.
 
 
-### srofs table
+### rbfs table
 
 Is the first 32 bytes of the disk and comport the following structure:
 
@@ -140,7 +140,7 @@ driver: 0
 
 ==========================
 
-srofs structure
+rbfs structure
 -----------------
 memory_size:                       0x7f94 32660 0111111110010100
 resource_descriptor_table_address: 0x0020   32 0000000000100000
