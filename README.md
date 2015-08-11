@@ -1,4 +1,4 @@
-# Simple Resource Oriented FileSystem (srofs)
+# Simple Resource Base File System (srbfs)
 
 ## What is it?
 
