@@ -57,7 +57,7 @@ void alloc_resource_spec(rbfs_t *rbfs) {
 
 void try_to_alloc_resources_that_is_possible_spec(rbfs_t *rbfs) {
     rbfs_op_result_t op_r;
-    rbfs_resource_code_t rbfs_resource_code[2];
+    rbfs_resource_code_t rbfs_resource_code[2] = { 0x00, 0x00 };
     uint8_t i = 0;
     rbfs_make_partition(rbfs, RBFS_DISK_32K, RBFS_ENV_VIRTUAL, RBFS_DRIVER_VIRTUAL);
     op_r = rbfs_format(rbfs);
@@ -155,7 +155,6 @@ void close_resource_spec(rbfs_t *rbfs) {
     rbfs_op_result_t op_r;
     rbfs_resource_code_t rbfs_resource_code;
     rbfs_resource_t resource;
-    unsigned char c[2];
     rbfs_make_partition(rbfs, RBFS_DISK_32K, RBFS_ENV_VIRTUAL, RBFS_DRIVER_VIRTUAL);
     op_r = rbfs_format(rbfs);
     op_r = rbfs_mount(RBFS_DRIVER_VIRTUAL, rbfs, RBFS_MOUNT_OPTION_NORMAL);

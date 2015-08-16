@@ -1,4 +1,4 @@
-#define rbfs_SPEC_DRIVER rbfs_DRIVER_VIRTUAL
+#define RBFS_SPEC_DRIVER RBFS_DRIVER_VIRTUAL
 
 #include <stdio.h>
 #include <stdlib.h>
@@ -24,7 +24,7 @@ void finish_rbfs_io();
 int main() {
     rbfs_t rbfs;
     init_rbfs_io();
-    rbfs_make_partition(&rbfs, rbfs_DISK_32K, rbfs_ENV_VIRTUAL, rbfs_DRIVER_VIRTUAL);
+    rbfs_make_partition(&rbfs, RBFS_DISK_32K, RBFS_ENV_VIRTUAL, RBFS_DRIVER_VIRTUAL);
     format_all();
     rbfs_format(&rbfs);
     format_spec(&rbfs);
@@ -51,7 +51,7 @@ int main() {
     read_only_mounting_spec(&rbfs);
     read_only_opening_spec(&rbfs);
 
-    rbfs_mount(rbfs_DRIVER_VIRTUAL, &rbfs, rbfs_MOUNT_OPTION_NORMAL);
+    rbfs_mount(RBFS_DRIVER_VIRTUAL, &rbfs, RBFS_MOUNT_OPTION_NORMAL);
     rbfs_io_memory_dump(&rbfs);
     finish_rbfs_io();
     return 0;
