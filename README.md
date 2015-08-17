@@ -1,5 +1,7 @@
 # Resource Based FileSystem (rbfs)
 
+[Documentation.pdf](Documentation.pdf)
+
 ## What is it?
 
 The rbfs is a simplified file system for small micro-controlled devices (like PIC or Arduino). 
